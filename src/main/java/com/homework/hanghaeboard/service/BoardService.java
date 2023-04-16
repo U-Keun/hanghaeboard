@@ -1,6 +1,7 @@
 package com.homework.hanghaeboard.service;
 
 import com.homework.hanghaeboard.dto.BoardRequestDto;
+import com.homework.hanghaeboard.dto.ResponseDto;
 import com.homework.hanghaeboard.entity.Board;
 import com.homework.hanghaeboard.repository.BoardRepository;
 import jakarta.transaction.Transactional;
@@ -16,40 +17,41 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     @Transactional
-    public Board createBoard(BoardRequestDto requestDto) {
+    public ResponseDto<?> createBoard(BoardRequestDto requestDto) {
         Board board = new Board(requestDto);
         boardRepository.save(board);
-        return board;
+        return ResponseDto.setSuccess(board);
     }
 
     @Transactional
-    public List<Board> getBoard() {
-        return boardRepository.findAllByOrderByModifiedAtDesc();
+    public ResponseDto<?> getBoard() {
+        List<Board> boardList= boardRepository.findAllByOrderByModifiedAtDesc();
+        return ResponseDto.setSuccess(boardList);
     }
 
     @Transactional
-    public Long update(Long id, BoardRequestDto requestDto) {
+    public ResponseDto<?> update(Long id, BoardRequestDto requestDto) {
 
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
 
-        if (boardRepository.findByUserpwd(requestDto.getUserpwd()) != null) {
+        if (board.getUserpwd().equals(requestDto.getUserpwd()) ) {
             board.update(requestDto);
-            return board.getId();
-        } else return null;
+            return ResponseDto.setSuccess(board);
+        } else return ResponseDto.setFailed();
     }
 
     @Transactional
-    public Long deleteBoard(Long id, BoardRequestDto requestDto) {
+    public ResponseDto<?> deleteBoard(Long id, BoardRequestDto requestDto) {
 
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
-        if (boardRepository.findByUserpwd(requestDto.getUserpwd()) != null) {
+        if (board.getUserpwd().equals(requestDto.getUserpwd()) ) {
             boardRepository.deleteById(id);
-            return id;
-        } else return null;
+            return ResponseDto.setSuccess(board);
+        } else return ResponseDto.setFailed();
     }
 
 }

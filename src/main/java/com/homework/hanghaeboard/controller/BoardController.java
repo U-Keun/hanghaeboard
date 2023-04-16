@@ -1,6 +1,7 @@
 package com.homework.hanghaeboard.controller;
 
 import com.homework.hanghaeboard.dto.BoardRequestDto;
+import com.homework.hanghaeboard.dto.ResponseDto;
 import com.homework.hanghaeboard.entity.Board;
 import com.homework.hanghaeboard.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -21,22 +22,22 @@ public class BoardController {
     }
 
     @PostMapping("/api/board")
-    public Board createBoard(@RequestBody BoardRequestDto requestDto) {
+    public ResponseDto<?> createBoard(@RequestBody BoardRequestDto requestDto) {
         return boardService.createBoard(requestDto);
     }
 
     @GetMapping("/api/board")
-    public List<Board> getBoards() {
+    public ResponseDto<?> getBoards() {
         return boardService.getBoard();
     }
 
     @PutMapping("/api/board/{id}")
-    public Long updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto) {
+    public ResponseDto<?> updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto) {
         return boardService.update(id, requestDto);
     }
 
     @DeleteMapping("/api/board/{id}")
-    public Long deleteBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto) {
+    public ResponseDto<?> deleteBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto) {
         return boardService.deleteBoard(id, requestDto);
     }
 }
