@@ -28,8 +28,11 @@ public class BoardController {
 
     @GetMapping("/api/board")
     public ResponseDto<?> getBoards() {
-        return boardService.getBoard();
+        return boardService.getBoards();
     }
+
+    @GetMapping("/api/board/{id}")
+    public ResponseDto<?> getBoard(@PathVariable Long id) { return boardService.getBoard(id); }
 
     @PutMapping("/api/board/{id}")
     public ResponseDto<?> updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto) {

@@ -24,9 +24,17 @@ public class BoardService {
     }
 
     @Transactional
-    public ResponseDto<?> getBoard() {
+    public ResponseDto<?> getBoards() {
         List<Board> boardList= boardRepository.findAllByOrderByModifiedAtDesc();
         return ResponseDto.setSuccess(boardList);
+    }
+
+    @Transactional
+    public ResponseDto<?> getBoard(Long id) {
+        Board board = boardRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
+        );
+        return ResponseDto.setSuccess(board);
     }
 
     @Transactional

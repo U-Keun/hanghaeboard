@@ -15,8 +15,5 @@ public class ResponseDto<D> {
         return ResponseDto.set(true, data);
     }
 
-
     public static <D> ResponseDto<D> setFailed () { return ResponseDto.set(false, null); }
-
-
 }
