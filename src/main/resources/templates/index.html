@@ -69,8 +69,8 @@
                                 ${contents}
                             </div>
                             <div id="${id}-editarea" class="edit">
-                                <input id="${id}-writer" placeholder="작성자" style="display:none">
-                                <input id="${id}-title" placeholder="제목" style="display:none">
+                                <input id="${id}-writer" placeholder="작성자" value="${username}">
+                                <input id="${id}-title" placeholder="제목" value="${title}">
                                 <textarea id="${id}-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
                             </div>
                             <input id="${id}-password" placeholder="비밀번호" style="display:none">
@@ -146,8 +146,6 @@
       $(`#${id}-editarea`).show();
       $(`#${id}-submit`).show();
       $(`#${id}-delete`).show();
-      $(`#${id}-title`).show();
-      $(`#${id}-writer`).show();
 
       $(`#${id}-password`).show();
 

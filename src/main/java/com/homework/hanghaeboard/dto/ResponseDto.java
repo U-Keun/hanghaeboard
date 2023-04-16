@@ -1,8 +1,6 @@
 package com.homework.hanghaeboard.dto;
 
-import com.homework.hanghaeboard.entity.Board;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
