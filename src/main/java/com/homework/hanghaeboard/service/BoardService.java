@@ -58,7 +58,7 @@ public class BoardService {
         );
         if (board.getUserpwd().equals(requestDto.getUserpwd()) ) {
             boardRepository.deleteById(id);
-            return ResponseDto.setSuccess(board);
+            return ResponseDto.setSuccess(null);
         } else return ResponseDto.setFailed();
     }
 
