@@ -1,5 +1,6 @@
 package com.homework.hanghaeboard.entity;
 
+import com.homework.hanghaeboard.dto.SignupRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,15 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column
-    private boolean admin;
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
+
+    public User(SignupRequestDto signupRequestDto) {
+        this.username = signupRequestDto.getUsername();
+        this.password = signupRequestDto.getPassword();
+    }
+
+//    @Column
+//    private boolean admin;
 }

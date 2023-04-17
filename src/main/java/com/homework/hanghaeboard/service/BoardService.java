@@ -44,7 +44,7 @@ public class BoardService {
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
 
-        if (board.getPassword().equals(requestDto.getUserpwd()) ) {
+        if (board.getPassword().equals(requestDto.getPassword()) ) {
             board.update(requestDto);
             return ResponseDto.setSuccess(board);
         } else return ResponseDto.setFailed();
@@ -56,7 +56,7 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
-        if (board.getPassword().equals(requestDto.getUserpwd()) ) {
+        if (board.getPassword().equals(requestDto.getPassword()) ) {
             boardRepository.deleteById(id);
             return ResponseDto.setSuccess(null);
         } else return ResponseDto.setFailed();
