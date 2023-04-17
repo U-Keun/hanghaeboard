@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
-
 @Getter
 @Entity(name ="BOARD")
 @NoArgsConstructor
@@ -19,22 +17,22 @@ public class Board extends Timestamped {
     private String username;
 
     @Column(nullable = false)
-    private String userpwd;
+    private String password;
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
     private String contents;
 
-    public Board(String username, String userpwd, String title, String contents) {
+    public Board(String username, String password, String title, String contents) {
         this.username = username;
-        this.userpwd = userpwd;
+        this.password = password;
         this.title = title;
         this.contents = contents;
     }
 
     public Board(BoardRequestDto requestDto) {
         this.username = requestDto.getUsername();
-        this.userpwd = requestDto.getUserpwd();
+        this.password = requestDto.getPassword();
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
