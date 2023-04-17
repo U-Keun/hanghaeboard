@@ -1,5 +1,5 @@
 # hanghaeboard
-항해99 스프링 1주차 Lv.1 과제
+항해99 스프링 주특기주차 과제
 
 ## API 명세
 |기능|method|url|request|response|
