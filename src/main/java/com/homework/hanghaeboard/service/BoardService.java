@@ -3,6 +3,7 @@ package com.homework.hanghaeboard.service;
 import com.homework.hanghaeboard.dto.BoardRequestDto;
 import com.homework.hanghaeboard.dto.ResponseDto;
 import com.homework.hanghaeboard.entity.Board;
+import com.homework.hanghaeboard.entity.Users;
 import com.homework.hanghaeboard.jwt.JwtUtil;
 import com.homework.hanghaeboard.repository.BoardRepository;
 import io.jsonwebtoken.Claims;
@@ -28,9 +29,9 @@ public class BoardService {
 
         if(!jwtUtil.validateToken(token)) return ResponseDto.setFailed("토큰이 유효하지 않음" ,403);
 
-        Board board = new Board(requestDto);
+        Board board = new Board(user, requestDto);
         boardRepository.save(board);
-        return ResponseDto.setSuccess("작성 완료!",board);
+        return ResponseDto.setSuccess("작성 완료!", board);
     }
 
     @Transactional
@@ -42,7 +43,7 @@ public class BoardService {
     @Transactional
     public ResponseDto<?> getBoard(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
+                () -> new IllegalArgumentException("게시물이 존재하지 않습니다.")
         );
         return ResponseDto.setSuccess("게시물 조회 완료", board);
     }
@@ -58,7 +59,11 @@ public class BoardService {
 
         if (token == null) return ResponseDto.setFailed("토큰이 존재하지 않음", 401);
 
-        if (!jwtUtil.validateToken(token)) return ResponseDto.setFailed("토큰이 유효하지 않음",403);
+        try {
+            jwtUtil.validateToken(token);
+        } catch (Exception e) {
+            return ResponseDto.setFailed("토큰이 유효하지 않음", 403);
+        }
 
         claims = jwtUtil.getUserInfoFromToken(token);
         if (board.getUser().getUsername().equals(claims.getSubject())) {
@@ -78,12 +83,17 @@ public class BoardService {
 
         if (token == null) return ResponseDto.setFailed("토큰이 존재하지 않음", 401);
 
-        if (!jwtUtil.validateToken(token)) return ResponseDto.setFailed("토큰이 유효하지 않음",403);
+        try {
+            jwtUtil.validateToken(token);
+        } catch (Exception e) {
+            return ResponseDto.setFailed("토큰이 유효하지 않음", 403);
+        }
 
         claims = jwtUtil.getUserInfoFromToken(token);
         if (board.getUser().getUsername().equals(claims.getSubject())) {
             boardRepository.deleteById(id);
-        }
+        } else return ResponseDto.setFailed("삭제할 권한이 없음", 403);
+
         return ResponseDto.setSuccess("삭제 완료",null);
     }
 

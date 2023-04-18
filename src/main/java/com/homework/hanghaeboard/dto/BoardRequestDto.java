@@ -1,11 +1,11 @@
 package com.homework.hanghaeboard.dto;
 
-import com.homework.hanghaeboard.entity.User;
+import com.homework.hanghaeboard.entity.Users;
 import lombok.Getter;
 
 @Getter
 public class BoardRequestDto {
-    private User user;
+    private String username;
     private String title;
     private String contents;
 }

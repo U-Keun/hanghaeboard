@@ -25,9 +25,9 @@ public class Board extends Timestamped {
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
-    private User user;
+    private Users user;
 
-    public Board(User user, String title, String contents) {
+    public Board(Users user, String title, String contents) {
         this.user = user;
         this.title = title;
         this.contents = contents;
