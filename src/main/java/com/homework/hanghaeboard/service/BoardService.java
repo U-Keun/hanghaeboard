@@ -27,18 +27,14 @@ public class BoardService {
     @Transactional
     public ResponseDto<?> createBoard(BoardRequestDto requestDto, HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);
-        Claims claims;
 
-        if (token != null) {
-            if (jwtUtil.validateToken(token)) {
-                claims = jwtUtil.getUserInfoFromToken(token);
-            } else {
-                throw new IllegalArgumentException("Token Error");
-            }
-            Board board = new Board(requestDto);
-            boardRepository.save(board);
-            return ResponseDto.setSuccess("작성 완료!",board);
-        } else return ResponseDto.setFailed("작성 실패", 403);
+        if(token == null) return ResponseDto.setFailed("토큰이 존재하지 않음", 401);
+
+        if(!jwtUtil.validateToken(token)) return ResponseDto.setFailed("토큰이 유효하지 않음" ,403);
+
+        Board board = new Board(requestDto);
+        boardRepository.save(board);
+        return ResponseDto.setSuccess("작성 완료!",board);
     }
 
     @Transactional

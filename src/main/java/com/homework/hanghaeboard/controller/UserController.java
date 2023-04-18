@@ -1,6 +1,7 @@
 package com.homework.hanghaeboard.controller;
 
 import com.homework.hanghaeboard.dto.LoginRequestDto;
+import com.homework.hanghaeboard.dto.ResponseDto;
 import com.homework.hanghaeboard.dto.SignupRequestDto;
 import com.homework.hanghaeboard.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
