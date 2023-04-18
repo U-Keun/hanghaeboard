@@ -6,6 +6,7 @@ import com.homework.hanghaeboard.entity.Board;
 import com.homework.hanghaeboard.entity.Users;
 import com.homework.hanghaeboard.jwt.JwtUtil;
 import com.homework.hanghaeboard.repository.BoardRepository;
+import com.homework.hanghaeboard.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -19,15 +20,24 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
     @Transactional
-    public ResponseDto<?> createBoard(BoardRequestDto requestDto, HttpServletRequest request) {
+    public ResponseDto<Board> createBoard(BoardRequestDto requestDto, HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);
 
         if(token == null) return ResponseDto.setFailed("토큰이 존재하지 않음", 401);
 
-        if(!jwtUtil.validateToken(token)) return ResponseDto.setFailed("토큰이 유효하지 않음" ,403);
+        try {
+            jwtUtil.validateToken(token);
+        } catch (Exception e) {
+            return ResponseDto.setFailed("토큰이 유효하지 않음", 403);
+        }
+
+        Users user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(
+                () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
+        );
 
         Board board = new Board(user, requestDto);
         boardRepository.save(board);
@@ -35,13 +45,13 @@ public class BoardService {
     }
 
     @Transactional
-    public ResponseDto<?> getBoards() {
+    public ResponseDto<List<Board>> getBoards() {
         List<Board> boardList= boardRepository.findAllByOrderByModifiedAtDesc();
         return ResponseDto.setSuccess("전체 게시물 조회 완료", boardList);
     }
 
     @Transactional
-    public ResponseDto<?> getBoard(Long id) {
+    public ResponseDto<Board> getBoard(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("게시물이 존재하지 않습니다.")
         );
@@ -49,8 +59,7 @@ public class BoardService {
     }
 
     @Transactional
-    public ResponseDto<?> update(Long id, BoardRequestDto requestDto, HttpServletRequest request) {
-
+    public ResponseDto<Board> update(Long id, BoardRequestDto requestDto, HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);
         Claims claims;
         Board board = boardRepository.findById(id).orElseThrow(
@@ -68,7 +77,8 @@ public class BoardService {
         claims = jwtUtil.getUserInfoFromToken(token);
         if (board.getUser().getUsername().equals(claims.getSubject())) {
             board.update(requestDto);
-        }
+        } else return ResponseDto.setFailed("수정할 권한이 없음", 403);
+
         return ResponseDto.setSuccess("수정 완료", board);
     }
 

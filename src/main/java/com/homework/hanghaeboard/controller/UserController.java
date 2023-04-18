@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequiredArgsConstructor
-
 public class UserController {
 
     private final UserService userService;

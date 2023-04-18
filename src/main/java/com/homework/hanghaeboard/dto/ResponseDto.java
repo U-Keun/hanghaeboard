@@ -13,7 +13,7 @@ public class ResponseDto<D> {
     private int statusCode;
     private D data;
 
-    public static <D> ResponseDto setSuccess (String message, D data) {
+    public static <D> ResponseDto<D> setSuccess (String message, D data) {
         return ResponseDto.set(true, message, 200, data);
     }
 
