@@ -24,7 +24,7 @@ public class UserService {
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional
-    public ResponseDto<User> signup(SignupRequestDto signupRequestDto){
+    public ResponseDto<?> signup(SignupRequestDto signupRequestDto){
         String username = signupRequestDto.getUsername();
         String password = signupRequestDto.getPassword();
 
@@ -33,11 +33,11 @@ public class UserService {
         }
         User user = new User(signupRequestDto);
         userRepository.save(user);
-        return ResponseDto.setSuccess("",null);
+        return ResponseDto.setSuccess("회원가입 완료",null);
     }
 
     @Transactional(readOnly = true)
-    public ResponseDto<User> login(LoginRequestDto loginRequestDto, HttpServletResponse response){
+    public ResponseDto<?> login(LoginRequestDto loginRequestDto, HttpServletResponse response){
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
 

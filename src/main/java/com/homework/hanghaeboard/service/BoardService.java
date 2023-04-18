@@ -3,19 +3,15 @@ package com.homework.hanghaeboard.service;
 import com.homework.hanghaeboard.dto.BoardRequestDto;
 import com.homework.hanghaeboard.dto.ResponseDto;
 import com.homework.hanghaeboard.entity.Board;
-import com.homework.hanghaeboard.entity.User;
 import com.homework.hanghaeboard.jwt.JwtUtil;
 import com.homework.hanghaeboard.repository.BoardRepository;
-import com.homework.hanghaeboard.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +48,8 @@ public class BoardService {
     }
 
     @Transactional
-    public ResponseDto<Board> update(Long id, BoardRequestDto requestDto, HttpServletRequest request) {
+    public ResponseDto<?> update(Long id, BoardRequestDto requestDto, HttpServletRequest request) {
+
         String token = jwtUtil.resolveToken(request);
         Claims claims;
         Board board = boardRepository.findById(id).orElseThrow(
