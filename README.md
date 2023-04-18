@@ -1,11 +1,5 @@
 # hanghaeboard
 항해99 스프링 주특기주차 과제
 
-## API 명세
-|기능|method|url|request|response|
-|------|---|---|---|---|
-|전체 게시글 목록 조회|GET|/|-||
-|게시글 작성|POST|/api/board|{ "username":"username", "userpwd":"userpwd", "title":"title", "contents":"contents" }|{ "success":boolean, "data":data }|
-|선택한 게시글 조회|GET|/api/board|{ "id":id }|{ "success":boolean, "data":data }|
-|선택한 게시글 수정|PUT|/api/board/{id}|{ "id":id, "username":"username", "userpwd":"userpwd", "title":"title", "contents":"contents" }|{ "success":boolean, "data":data }|
-|선택한 게시글 삭제|DELETE|/api/board/{id}|{ "userpwd":"userpwd" }|{ "success":boolean, "data":null" }|
+## API 명세 및 ERD 노션 링크
+https://regular-toothbrush-ae8.notion.site/Spring-Lv-2-25eb3bc95a104aa689626ead3b025e56
