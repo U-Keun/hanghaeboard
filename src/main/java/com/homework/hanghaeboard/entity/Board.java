@@ -41,5 +41,4 @@ public class Board extends Timestamped {
         this.username = boardRequestDto.getUsername();
         this.contents = boardRequestDto.getContents();
     }
-
 }

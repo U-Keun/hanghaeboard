@@ -22,8 +22,8 @@ public class BoardController {
     }
 
     @PostMapping("/api/board")
-    public ResponseDto<?> createBoard(@RequestBody BoardRequestDto requestDto) {
-        return boardService.createBoard(requestDto);
+    public ResponseDto<?> createBoard(@RequestBody BoardRequestDto requestDto, HttpServletRequest request) {
+        return boardService.createBoard(requestDto, request);
     }
 
     @GetMapping("/api/board")

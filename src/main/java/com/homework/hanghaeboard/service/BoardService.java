@@ -55,16 +55,22 @@ public class BoardService {
     }
 
     @Transactional
-    public ResponseDto<?> update(Long id, BoardRequestDto requestDto) {
+    public ResponseDto<Board> update(Long id, BoardRequestDto requestDto, HttpServletRequest request) {
 
+        String token = jwtUtil.resolveToken(request);
+        Claims claims;
         Board board = boardRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
+                () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
 
-        if(!board.getPassword().equals(requestDto.getPassword()) ) {
-            return ResponseDto.setFailed();
+        if (token == null) return ResponseDto.setFailed(); //msg : 토큰이 유효하지 않음
+
+        if (!jwtUtil.validateToken(token)) return ResponseDto.setFailed(); // msg : 토큰이 없음..
+
+        claims = jwtUtil.getUserInfoFromToken(token);
+        if (board.getUsername().equals(claims.getSubject())) {
+            board.update(requestDto);
         }
-        board.update(requestDto);
         return ResponseDto.setSuccess(board);
     }
 
@@ -74,6 +80,8 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
+
+
         if (board.getPassword().equals(requestDto.getPassword()) ) {
             boardRepository.deleteById(id);
             return ResponseDto.setSuccess(null);
