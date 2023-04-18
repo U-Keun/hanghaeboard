@@ -24,19 +24,20 @@ public class UserService {
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional
-    public ResponseDto<?> signup(SignupRequestDto signupRequestDto){
+    public ResponseDto<User> signup(SignupRequestDto signupRequestDto){
         String username = signupRequestDto.getUsername();
         String password = signupRequestDto.getPassword();
 
-        if (Pattern.matches("^[a-z0-9]{4,10}$", username) && Pattern.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,15}$", password) ){
-            User user = new User(signupRequestDto);
-            userRepository.save(user);
-            return ResponseDto.setSuccess(user);
-        } else return ResponseDto.setFailed();
+        if (!(Pattern.matches("^[a-z0-9]{4,10}$", username) && Pattern.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,15}$", password))){
+            return ResponseDto.setFailed("아이디, 비밀번호가 유효하지 않습니다.",400);
+        }
+        User user = new User(signupRequestDto);
+        userRepository.save(user);
+        return ResponseDto.setSuccess("",null);
     }
 
     @Transactional(readOnly = true)
-    public LoginResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response){
+    public ResponseDto<User> login(LoginRequestDto loginRequestDto, HttpServletResponse response){
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
 
@@ -45,7 +46,7 @@ public class UserService {
         );
         if (user.getPassword().equals(password)) {
             response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
-            return LoginResponseDto.setSuccess();
-        } else return LoginResponseDto.setFailed();
+            return ResponseDto.setSuccess("로그인 완료", null);
+        } else return ResponseDto.setFailed("비밀번호가 틀렸습니다", 401);
     }
 }
