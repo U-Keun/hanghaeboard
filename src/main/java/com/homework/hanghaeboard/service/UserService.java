@@ -1,7 +1,6 @@
 package com.homework.hanghaeboard.service;
 
 import com.homework.hanghaeboard.dto.LoginRequestDto;
-import com.homework.hanghaeboard.dto.LoginResponseDto;
 import com.homework.hanghaeboard.dto.ResponseDto;
 import com.homework.hanghaeboard.dto.SignupRequestDto;
 import com.homework.hanghaeboard.entity.User;

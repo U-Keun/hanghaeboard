@@ -1,15 +1,10 @@
 package com.homework.hanghaeboard.controller;
 
 import com.homework.hanghaeboard.dto.LoginRequestDto;
-import com.homework.hanghaeboard.dto.LoginResponseDto;
-import com.homework.hanghaeboard.dto.ResponseDto;
 import com.homework.hanghaeboard.dto.SignupRequestDto;
-import com.homework.hanghaeboard.service.BoardService;
 import com.homework.hanghaeboard.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
