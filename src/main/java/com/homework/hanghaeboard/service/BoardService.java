@@ -61,7 +61,7 @@ public class BoardService {
         if (!jwtUtil.validateToken(token)) return ResponseDto.setFailed("토큰이 유효하지 않음",403);
 
         claims = jwtUtil.getUserInfoFromToken(token);
-        if (board.getUsername().equals(claims.getSubject())) {
+        if (board.getUser().getUsername().equals(claims.getSubject())) {
             board.update(requestDto);
         }
         return ResponseDto.setSuccess("수정 완료", board);
@@ -81,7 +81,7 @@ public class BoardService {
         if (!jwtUtil.validateToken(token)) return ResponseDto.setFailed("토큰이 유효하지 않음",403);
 
         claims = jwtUtil.getUserInfoFromToken(token);
-        if (board.getUsername().equals(claims.getSubject())) {
+        if (board.getUser().getUsername().equals(claims.getSubject())) {
             boardRepository.deleteById(id);
         }
         return ResponseDto.setSuccess("삭제 완료",null);

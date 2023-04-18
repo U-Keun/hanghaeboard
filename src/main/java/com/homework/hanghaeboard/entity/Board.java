@@ -23,9 +23,12 @@ public class Board extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
-    public Board(String username, String password, String title, String contents) {
-        this.username = username;
-        this.password = password;
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
+
+    public Board(User user, String title, String contents) {
+        this.user = user;
         this.title = title;
         this.contents = contents;
     }
