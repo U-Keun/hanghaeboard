@@ -4,6 +4,7 @@ import com.homework.hanghaeboard.dto.BoardRequestDto;
 import com.homework.hanghaeboard.dto.ResponseDto;
 import com.homework.hanghaeboard.entity.Board;
 import com.homework.hanghaeboard.service.BoardService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,12 +36,12 @@ public class BoardController {
     public ResponseDto<?> getBoard(@PathVariable Long id) { return boardService.getBoard(id); }
 
     @PutMapping("/api/board/{id}")
-    public ResponseDto<?> updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto) {
-        return boardService.update(id, requestDto);
+    public ResponseDto<?> updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto, HttpServletRequest request) {
+        return boardService.update(id, requestDto, request);
     }
 
     @DeleteMapping("/api/board/{id}")
-    public ResponseDto<?> deleteBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto) {
-        return boardService.deleteBoard(id, requestDto);
+    public ResponseDto<?> deleteBoard(@PathVariable Long id, HttpServletRequest request) {
+        return boardService.deleteBoard(id, request);
     }
 }

@@ -13,7 +13,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -75,17 +77,23 @@ public class BoardService {
     }
 
     @Transactional
-    public ResponseDto<?> deleteBoard(Long id, BoardRequestDto requestDto) {
+    public ResponseDto<?> deleteBoard(Long id, HttpServletRequest request) {
 
+        String token = jwtUtil.resolveToken(request);
+        Claims claims;
         Board board = boardRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
+                () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
 
+        if (token == null) return ResponseDto.setFailed(); //msg : 토큰이 유효하지 않음
 
-        if (board.getPassword().equals(requestDto.getPassword()) ) {
+        if (!jwtUtil.validateToken(token)) return ResponseDto.setFailed(); // msg : 토큰이 없음..
+
+        claims = jwtUtil.getUserInfoFromToken(token);
+        if (board.getUsername().equals(claims.getSubject())) {
             boardRepository.deleteById(id);
-            return ResponseDto.setSuccess(null);
-        } else return ResponseDto.setFailed();
+        }
+        return ResponseDto.setSuccess(null);
     }
 
 }
