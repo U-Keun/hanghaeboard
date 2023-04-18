@@ -3,7 +3,12 @@ package com.homework.hanghaeboard.service;
 import com.homework.hanghaeboard.dto.BoardRequestDto;
 import com.homework.hanghaeboard.dto.ResponseDto;
 import com.homework.hanghaeboard.entity.Board;
+import com.homework.hanghaeboard.entity.User;
+import com.homework.hanghaeboard.jwt.JwtUtil;
 import com.homework.hanghaeboard.repository.BoardRepository;
+import com.homework.hanghaeboard.repository.UserRepository;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,12 +20,24 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     @Transactional
-    public ResponseDto<?> createBoard(BoardRequestDto requestDto) {
-        Board board = new Board(requestDto);
-        boardRepository.save(board);
-        return ResponseDto.setSuccess(board);
+    public ResponseDto<?> createBoard(BoardRequestDto requestDto, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        Claims claims;
+
+        if (token != null) {
+            if (jwtUtil.validateToken(token)) {
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else {
+                throw new IllegalArgumentException("Token Error");
+            }
+            Board board = new Board(requestDto);
+            boardRepository.save(board);
+            return ResponseDto.setSuccess(board);
+        } else return ResponseDto.setFailed();
     }
 
     @Transactional
