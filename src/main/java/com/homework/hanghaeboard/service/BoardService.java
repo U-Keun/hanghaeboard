@@ -61,10 +61,11 @@ public class BoardService {
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
 
-        if (board.getPassword().equals(requestDto.getPassword()) ) {
-            board.update(requestDto);
-            return ResponseDto.setSuccess(board);
-        } else return ResponseDto.setFailed();
+        if(!board.getPassword().equals(requestDto.getPassword()) ) {
+            return ResponseDto.setFailed();
+        }
+        board.update(requestDto);
+        return ResponseDto.setSuccess(board);
     }
 
     @Transactional
