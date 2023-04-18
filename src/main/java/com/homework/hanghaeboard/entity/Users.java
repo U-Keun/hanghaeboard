@@ -6,12 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Entity(name = "USER")
+@Entity
 @NoArgsConstructor
-public class User {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "userId")
+    private Long userId;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -19,11 +20,11 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
-    public User(SignupRequestDto signupRequestDto) {
+    public Users(SignupRequestDto signupRequestDto) {
         this.username = signupRequestDto.getUsername();
         this.password = signupRequestDto.getPassword();
     }

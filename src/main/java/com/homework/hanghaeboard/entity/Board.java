@@ -1,6 +1,7 @@
 package com.homework.hanghaeboard.entity;
 
 import com.homework.hanghaeboard.dto.BoardRequestDto;
+import com.homework.hanghaeboard.repository.BoardRepository;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,35 +12,29 @@ import lombok.NoArgsConstructor;
 public class Board extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false)
-    private String password;
+    private Long boardId;
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
     private String contents;
 
-    public Board(String username, String password, String title, String contents) {
-        this.username = username;
-        this.password = password;
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private Users user;
+
+    public Board(Users user, String title, String contents) {
+        this.user = user;
         this.title = title;
         this.contents = contents;
     }
 
-    public Board(BoardRequestDto requestDto) {
-        this.username = requestDto.getUsername();
-        this.password = requestDto.getPassword();
+    public Board(Users user, BoardRequestDto requestDto) {
+        this.user = user;
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
 
     public void update(BoardRequestDto boardRequestDto) {
-        this.username = boardRequestDto.getUsername();
         this.contents = boardRequestDto.getContents();
     }
-
 }
